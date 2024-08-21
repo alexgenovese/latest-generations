@@ -10,4 +10,7 @@ module.exports = {
       },
     ],
   },
+  env: {
+    cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME
+  },
 };
