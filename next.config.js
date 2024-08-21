@@ -1,4 +1,7 @@
 module.exports = {
+  env: {
+    global_variables: process.env,
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
