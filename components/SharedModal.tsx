@@ -72,7 +72,11 @@ export default function SharedModal({
                 className="absolute"
               >
                 <Image
-                  src={`https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,${navigation ? "w_1280" : "w_1920"}/${currentImage.public_id}.${currentImage.format}`}
+                  src={`https://res.cloudinary.com/${
+                    process.env.CLOUDINARY_CLOUD_NAME
+                  }/image/upload/c_scale,${navigation ? "w_1280" : "w_1920"}/${
+                    currentImage.public_id
+                  }.${currentImage.format}`}
                   width={navigation ? 1280 : 1920}
                   height={navigation ? 853 : 1280}
                   priority
