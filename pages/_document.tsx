@@ -10,7 +10,7 @@ class MyDocument extends Document {
             name="description"
             content="See latest Reica generation - Free Photo, Free Generation."
           />
-          <meta property="og:site_name" content="nextjsconf-pics.vercel.app" />
+          <meta property="og:site_name" content="https://latest-generations.getreica.com/" />
           <meta
             property="og:description"
             content="See latest Reica generation - Free Photo, Free Generation."
