@@ -6,6 +6,7 @@ import getResults from "../../utils/cachedImages";
 import cloudinary from "../../utils/cloudinary";
 import getBase64ImageUrl from "../../utils/generateBlurPlaceholder";
 import type { ImageProps } from "../../utils/types";
+import { supabase } from '../../utils/supabaseClient';
 
 const Home: NextPage = ({ currentPhoto }: { currentPhoto: ImageProps }) => {
   const router = useRouter();
@@ -17,7 +18,7 @@ const Home: NextPage = ({ currentPhoto }: { currentPhoto: ImageProps }) => {
   return (
     <>
       <Head>
-        <title>Reica Latest Generations</title>
+        <title>Reica - Generate Free Photo AI</title>
         <meta property="og:image" content={currentPhotoUrl} />
         <meta name="twitter:image" content={currentPhotoUrl} />
       </Head>
@@ -34,14 +35,28 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const results = await getResults();
 
   let reducedResults: ImageProps[] = [];
+
+  // SUPABASE
+  const { data, error } = await supabase
+  .from('latest_generations')
+  .select('*');
+  
+  if (error) {
+    console.error('Error fetching data:', error);
+    return { props: { data: [] } };
+  }
+
   let i = 0;
   for (let result of results.resources) {
+    let picked = data.find(o => o.image_name === result.public_id);
+
     reducedResults.push({
       id: i,
       height: result.height,
       width: result.width,
       public_id: result.public_id,
       format: result.format,
+      prompt: picked ? picked.prompt : ""
     });
     i++;
   }

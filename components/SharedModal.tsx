@@ -14,7 +14,7 @@ import { variants } from "../utils/animationVariants";
 import downloadPhoto from "../utils/downloadPhoto";
 import { range } from "../utils/range";
 import type { ImageProps, SharedModalProps } from "../utils/types";
-import { loadEnvConfig } from '@next/env'
+// import { loadEnvConfig } from '@next/env'
 import Twitter from "./Icons/Twitter";
 
 export default function SharedModal({
@@ -60,7 +60,7 @@ export default function SharedModal({
         {...handlers}
       >
         {/* Main image */}
-        <div className="w-full overflow-hidden">
+        <div className="w-full">
           <div className="relative flex aspect-[3/2] items-center justify-center">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
@@ -81,14 +81,26 @@ export default function SharedModal({
                   width={navigation ? 1280 : 1920}
                   height={navigation ? 853 : 1280}
                   priority
-                  alt="Reica - Last Generation"
+                  alt={ `"Reica - Free photo generation AI - ${currentImage.prompt}"`}
                   onLoad={() => setLoaded(true)}
                 />
+                { (loaded == false) ? <>
+                  <div className='flex space-x-4 justify-center items-center bg-white h-[1280px] dark:invert'>
+                    <span className='sr-only'>Loading...</span>
+                    <div className='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+                    <div className='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+                    <div className='h-4 w-4 bg-black rounded-full animate-bounce'></div>
+                  </div>
+                </> : "" }
+                <div className="bg-gray-50 p-8">
+                  <span className="text-3xl font-bold font-sans block py-2">You must write a long prompt to generate the image.</span>
+                  <span className="text-4xl font-bold font-sans block pb-4">With Reica just clicking on NO-PROMPT builder to generate this image.</span>
+                  <p className="text-base">{currentImage.prompt}</p>
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
-
         {/* Buttons + bottom nav bar */}
         <div className="absolute inset-0 mx-auto flex max-w-7xl items-center justify-center">
           {/* Buttons */}
@@ -173,7 +185,7 @@ export default function SharedModal({
                 className="mx-auto mt-6 mb-6 flex aspect-[3/2] h-14"
               >
                 <AnimatePresence initial={false}>
-                  {filteredImages.map(({ public_id, format, id }) => (
+                  {filteredImages.map(({ public_id, format, id, prompt }) => (
                     <motion.button
                       initial={{
                         width: "0%",
@@ -196,7 +208,7 @@ export default function SharedModal({
                       } relative inline-block w-full shrink-0 transform-gpu overflow-hidden focus:outline-none`}
                     >
                       <Image
-                        alt="small photos on the bottom"
+                        alt={`Reica - AI Photo generate for free - ${prompt}`}
                         width={180}
                         height={120}
                         className={`${

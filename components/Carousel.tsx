@@ -37,7 +37,7 @@ export default function Carousel({
         <Image
           src={currentPhoto.blurDataUrl}
           className="pointer-events-none h-full w-full"
-          alt="blurred background"
+          alt={ `Reica - Free photo generation AI - ${currentPhoto.prompt}`}
           fill
           priority={true}
         />

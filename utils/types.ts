@@ -6,6 +6,7 @@ export interface ImageProps {
   public_id: string;
   format: string;
   blurDataUrl?: string;
+  prompt?: string;
 }
 
 export interface SharedModalProps {
@@ -16,4 +17,5 @@ export interface SharedModalProps {
   closeModal: () => void;
   navigation: boolean;
   direction?: number;
+  prompt?: string;
 }

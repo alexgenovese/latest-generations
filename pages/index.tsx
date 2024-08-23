@@ -10,6 +10,8 @@ import cloudinary from "../utils/cloudinary";
 import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
+import { supabase } from '../utils/supabaseClient';
+
 
 const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   const router = useRouter();
@@ -29,7 +31,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   return (
     <>
       <Head>
-        <title>Reica - Latest generations</title>
+        <title>Reica - Generate Free Photo AI</title>
         <meta
           property="og:image"
           content="./og-image.png"
@@ -70,7 +72,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               Sign up to generate for free!
             </a>
           </div>
-          {images.map(({ id, public_id, format, blurDataUrl }) => (
+          {images.map(({ id, public_id, format, prompt, blurDataUrl }) => (
             <Link
               key={id}
               href={`/?photoId=${id}`}
@@ -80,7 +82,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
             >
               <Image
-                alt="Reica - Latest Geenration"
+                alt={`Reica - AI Photo Generation Free - ${prompt}`}
                 className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110"
                 style={{ transform: "translate3d(0, 0, 0)" }}
                 placeholder="blur"
@@ -112,40 +114,55 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   );
 };
 
-export default Home;
 
 export async function getStaticProps() {
   const results = await cloudinary.v2.search
-    .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
-    .sort_by("public_id", "desc")
-    .max_results(400)
-    .execute();
+  .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
+  .sort_by("public_id", "desc")
+  .max_results(400)
+  .execute();
   let reducedResults: ImageProps[] = [];
-
+  
+  // SUPABASE
+  const { data, error } = await supabase
+  .from('latest_generations')
+  .select('*');
+  
+  if (error) {
+    console.error('Error fetching data:', error);
+    return { props: { data: [] } };
+  }
+  
   let i = 0;
   for (let result of results.resources) {
+    // console.log('cloudinary: ', result.public_id, result.format )
+    let picked = data.find(o => o.image_name === result.public_id);
+    
     reducedResults.push({
       id: i,
       height: result.height,
       width: result.width,
       public_id: result.public_id,
       format: result.format,
+      prompt: picked ? picked.prompt : ""
     });
     i++;
   }
-
+  
   const blurImagePromises = results.resources.map((image: ImageProps) => {
     return getBase64ImageUrl(image);
   });
   const imagesWithBlurDataUrls = await Promise.all(blurImagePromises);
-
+  
   for (let i = 0; i < reducedResults.length; i++) {
     reducedResults[i].blurDataUrl = imagesWithBlurDataUrls[i];
   }
-
+  
   return {
     props: {
       images: reducedResults,
     },
   };
 }
+
+export default Home;
