@@ -27,6 +27,7 @@ export default function SharedModal({
   direction,
 }: SharedModalProps) {
   const [loaded, setLoaded] = useState(false);
+  console.log('loaded', loaded)
 
   let filteredImages = images?.filter((img: ImageProps) =>
     range(index - 15, index + 15).includes(img.id),
@@ -73,9 +74,10 @@ export default function SharedModal({
                 className="absolute"
               >
                 <Image
+                  id="image"
                   src={`https://res.cloudinary.com/${
                     process.env.cloudinary_cloud_name
-                  }/image/upload/c_scale,${navigation ? "w_1280" : "w_1920"}/${
+                  }/image/upload/c_scale,${navigation ? "w_1024" : "w_1280"}/${
                     currentImage.public_id
                   }.${currentImage.format}`}
                   width={navigation ? 1024 : 1920}
@@ -83,48 +85,47 @@ export default function SharedModal({
                   priority
                   alt={ `"Reica - ai photo generator - ${currentImage.prompt}"`}
                   onLoad={() => setLoaded(true)}
+                  onLoadStart={() => setLoaded(false) }
+
                 />
 
                 { (loaded == false) ? <>
-                  <div className='flex space-x-4 justify-center items-center bg-white h-[512px] dark:invert'>
+                  <div className='absolute top-60 flex space-x-4 justify-center items-center bg-white h-[512px] w-[64rem] dark:invert'>
                     <span className='sr-only'>Loading...</span>
                     <div className='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
                     <div className='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
                     <div className='h-4 w-4 bg-black rounded-full animate-bounce'></div>
                   </div>
-                </> : "" }
+                </> : <></> }
 
-                <div className="bg-white absolute top-0 w-full p-6 -mt-20">
-                  <div className="flex justify-between">
-                    
-                    <div>
-                    
-                    </div>
-
-                    <div>
-                      <button 
-                      onClick={() => {
-                        downloadPhoto(
-                            `https://res.cloudinary.com/${process.env.cloudinary_cloud_name}/image/upload/${currentImage.public_id}.${currentImage.format}`,
-                            `${index}.jpg`,
-                          )
+                { (loaded) ?
+                <>
+                  <div className="bg-white absolute top-0 w-full p-6 -mt-20">
+                    <div className="flex justify-between">
+                      <div></div>
+                      <div>
+                        <button 
+                        onClick={() => {
+                          downloadPhoto(
+                              `https://res.cloudinary.com/${process.env.cloudinary_cloud_name}/image/upload/${currentImage.public_id}.${currentImage.format}`,
+                              `${index}.jpg`,
+                            )
+                          }
                         }
-                      }
-                      className="pointer inline-block rounded-lg border border-white bg-green-600 px-6 py-4 text-lg font-semibold text-white transition hover:bg-green-600/80 hover:text-white">
-                        Download high-resolution ( {currentImage.width} x {currentImage.height} )
-                      </button>
+                        className="pointer inline-block rounded-lg border border-white bg-green-600 px-6 py-4 text-lg font-semibold text-white transition hover:bg-green-600/80 hover:text-white">
+                          DOWNLOAD FREE ({currentImage.width} x {currentImage.height})
+                        </button>
+                      </div>
                     </div>
-
                   </div>
-
-                </div>
-                <div className="bg-gray-50 p-8">
-                <span className="text-xl font-bold font-sans block py-2">You have to write a long prompt to generate the image.</span>
-                  <span className="text-2xl font-bold font-sans block pb-4">With Reica just clicking on NO-PROMPT builder to generate this image.</span>
-                  <a className="bg-blue-800 hover:bg-blue-600 px-8 py-4 inline-flex text-white text-2xl" target="_blank" href="https://getreica.com?ref=latest-generations">Try it Now for Free</a>
-                  <hr className="my-4" />
-                  <p className="text-base text-gray-500">{currentImage.prompt}</p>
-                </div>
+                  <div className="bg-gradient-to-t from-black to-transparent p-8 absolute bottom-0 w-full">
+                    <span className="text-xl text-white font-bold font-sans block py-2">You have to write a long prompt to generate the image.</span>
+                    <span className="text-2xl text-white font-bold font-sans block pb-4">With Reica just clicking on NO-PROMPT builder to generate this image.</span>
+                    <a className="bg-blue-600 hover:bg-blue-600 px-8 py-4 inline-flex text-white text-2xl" target="_blank" href="https://getreica.com?ref=latest-generations">Try it Now for Free</a>
+                    <p className="text-lg mt-4 text-gray-100 text-ellipsis text-nowrap overflow-y-auto">{currentImage.prompt}</p>
+                  </div>
+                </>
+                : (<></>) }
               </motion.div>
             </AnimatePresence>
           </div>
