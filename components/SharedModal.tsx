@@ -93,8 +93,9 @@ export default function SharedModal({
                   </div>
                 </> : "" }
                 <div className="bg-gray-50 p-8">
-                  <span className="text-3xl font-bold font-sans block py-2">You must write a long prompt to generate the image.</span>
-                  <span className="text-4xl font-bold font-sans block pb-4">With Reica just clicking on NO-PROMPT builder to generate this image.</span>
+                  <span className="text-xl font-bold font-sans block py-2">You have to write a long prompt to generate the image.</span>
+                  <span className="text-2xl font-bold font-sans block pb-4">With Reica just clicking on NO-PROMPT builder to generate this image.</span>
+                  <a className="bg-blue-800 hover:bg-blue-600 p-4 inline-flex text-white" target="_blank" href="https://getreica.com?ref=latest-generations">Try it Now for Free</a>
                   <p className="text-base">{currentImage.prompt}</p>
                 </div>
               </motion.div>
