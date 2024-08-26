@@ -1,4 +1,10 @@
-# Next.js & Cloudinary example app
+# Reica Wallpaper 
+
+Get all images and prompts from Supabase, load from Cloudinary the assets and compose the wallpaper with infinite scroll. 
+
+## Goal: Traffic
+
+## BASED ON --> Next.js & Cloudinary example app
 
 This example shows how to create an image gallery site using Next.js, [Cloudinary](https://cloudinary.com), and [Tailwind](https://tailwindcss.com).
 

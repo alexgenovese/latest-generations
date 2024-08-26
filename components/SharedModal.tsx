@@ -78,32 +78,59 @@ export default function SharedModal({
                   }/image/upload/c_scale,${navigation ? "w_1280" : "w_1920"}/${
                     currentImage.public_id
                   }.${currentImage.format}`}
-                  width={navigation ? 1280 : 1920}
-                  height={navigation ? 853 : 1280}
+                  width={navigation ? 1024 : 1920}
+                  height={navigation ? 768 : 1280}
                   priority
-                  alt={ `"Reica - Free photo generation AI - ${currentImage.prompt}"`}
+                  alt={ `"Reica - ai photo generator - ${currentImage.prompt}"`}
                   onLoad={() => setLoaded(true)}
                 />
+
                 { (loaded == false) ? <>
-                  <div className='flex space-x-4 justify-center items-center bg-white h-[1280px] dark:invert'>
+                  <div className='flex space-x-4 justify-center items-center bg-white h-[512px] dark:invert'>
                     <span className='sr-only'>Loading...</span>
                     <div className='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
                     <div className='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
                     <div className='h-4 w-4 bg-black rounded-full animate-bounce'></div>
                   </div>
                 </> : "" }
+
+                <div className="bg-white absolute top-0 w-full p-6 -mt-20">
+                  <div className="flex justify-between">
+                    
+                    <div>
+                    
+                    </div>
+
+                    <div>
+                      <button 
+                      onClick={() => {
+                        downloadPhoto(
+                            `https://res.cloudinary.com/${process.env.cloudinary_cloud_name}/image/upload/${currentImage.public_id}.${currentImage.format}`,
+                            `${index}.jpg`,
+                          )
+                        }
+                      }
+                      className="pointer inline-block rounded-lg border border-white bg-green-600 px-6 py-4 text-lg font-semibold text-white transition hover:bg-green-600/80 hover:text-white">
+                        Download high-resolution ( {currentImage.width} x {currentImage.height} )
+                      </button>
+                    </div>
+
+                  </div>
+
+                </div>
                 <div className="bg-gray-50 p-8">
-                  <span className="text-xl font-bold font-sans block py-2">You have to write a long prompt to generate the image.</span>
+                <span className="text-xl font-bold font-sans block py-2">You have to write a long prompt to generate the image.</span>
                   <span className="text-2xl font-bold font-sans block pb-4">With Reica just clicking on NO-PROMPT builder to generate this image.</span>
-                  <a className="bg-blue-800 hover:bg-blue-600 p-4 inline-flex text-white" target="_blank" href="https://getreica.com?ref=latest-generations">Try it Now for Free</a>
-                  <p className="text-base">{currentImage.prompt}</p>
+                  <a className="bg-blue-800 hover:bg-blue-600 px-8 py-4 inline-flex text-white text-2xl" target="_blank" href="https://getreica.com?ref=latest-generations">Try it Now for Free</a>
+                  <hr className="my-4" />
+                  <p className="text-base text-gray-500">{currentImage.prompt}</p>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
         {/* Buttons + bottom nav bar */}
-        <div className="absolute inset-0 mx-auto flex max-w-7xl items-center justify-center">
+        <div className="absolute inset-0 mx-auto flex max-w-5xl items-center justify-center">
           {/* Buttons */}
           {loaded && (
             <div className="relative aspect-[3/2] max-h-full w-full">
@@ -113,7 +140,11 @@ export default function SharedModal({
                     <button
                       className="absolute left-3 top-[calc(50%-16px)] rounded-full bg-black/50 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none"
                       style={{ transform: "translate3d(0, 0, 0)" }}
-                      onClick={() => changePhotoId(index - 1)}
+                      onClick={() => {
+                        setLoaded(false);
+                        changePhotoId(index - 1)
+                      }
+                    }
                     >
                       <ChevronLeftIcon className="h-6 w-6" />
                     </button>
@@ -122,57 +153,27 @@ export default function SharedModal({
                     <button
                       className="absolute right-3 top-[calc(50%-16px)] rounded-full bg-black/50 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none"
                       style={{ transform: "translate3d(0, 0, 0)" }}
-                      onClick={() => changePhotoId(index + 1)}
+                      onClick={() => {
+                        setLoaded(false);
+                        changePhotoId(index + 1)
+                      }
+                    }
                     >
                       <ChevronRightIcon className="h-6 w-6" />
                     </button>
                   )}
                 </>
               )}
-              <div className="absolute top-0 right-0 flex items-center gap-2 p-3 text-white">
-                {navigation ? (
-                  <a
-                    href={`https://res.cloudinary.com/${process.env.cloudinary_cloud_name}/image/upload/${currentImage.public_id}.${currentImage.format}`}
-                    className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
-                    target="_blank"
-                    title="Open fullsize version"
-                    rel="noreferrer"
-                  >
-                    <ArrowTopRightOnSquareIcon className="h-5 w-5" />
-                  </a>
-                ) : (
-                  <a
-                    href={`https://twitter.com/intent/tweet?text=Check%20out%20this%20pic%20from%20Next.js%20Conf!%0A%0Ahttps://nextjsconf-pics.vercel.app/p/${index}`}
-                    className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
-                    target="_blank"
-                    title="Open fullsize version"
-                    rel="noreferrer"
-                  >
-                    <Twitter className="h-5 w-5" />
-                  </a>
-                )}
-                <button
-                  onClick={() =>
-                    downloadPhoto(
-                      `https://res.cloudinary.com/${process.env.cloudinary_cloud_name}/image/upload/${currentImage.public_id}.${currentImage.format}`,
-                      `${index}.jpg`,
-                    )
-                  }
-                  className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
-                  title="Download fullsize version"
-                >
-                  <ArrowDownTrayIcon className="h-5 w-5" />
-                </button>
-              </div>
-              <div className="absolute top-0 left-0 flex items-center gap-2 p-3 text-white">
+              
+              <div className="absolute -top-[12rem] -right-[6rem] flex items-center gap-2 p-3 text-white">
                 <button
                   onClick={() => closeModal()}
                   className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
                 >
                   {navigation ? (
-                    <XMarkIcon className="h-5 w-5" />
+                    <XMarkIcon className="h-12 w-12" />
                   ) : (
-                    <ArrowUturnLeftIcon className="h-5 w-5" />
+                    <ArrowUturnLeftIcon className="h-12 w-12" />
                   )}
                 </button>
               </div>
@@ -198,7 +199,11 @@ export default function SharedModal({
                         x: `${Math.max(index * -100, 15 * -100)}%`,
                       }}
                       exit={{ width: "0%" }}
-                      onClick={() => changePhotoId(id)}
+                      onClick={() => {
+                          setLoaded(false);
+                          changePhotoId(id)
+                        }
+                      }
                       key={id}
                       className={`${
                         id === index
@@ -209,7 +214,7 @@ export default function SharedModal({
                       } relative inline-block w-full shrink-0 transform-gpu overflow-hidden focus:outline-none`}
                     >
                       <Image
-                        alt={`Reica - AI Photo generate for free - ${prompt}`}
+                        alt={`Reica - free ai photo generator - ${prompt}`}
                         width={180}
                         height={120}
                         className={`${
