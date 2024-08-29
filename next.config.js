@@ -11,6 +11,7 @@ module.exports = {
     ],
   },
   env: {
-    cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME
+    cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    comfydeploy_api_key: process.env.COMFYDEPLOY_API_KEY
   },
 };

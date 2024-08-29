@@ -9,7 +9,7 @@ import { ComfyDeploy } from 'comfydeploy';
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_API_KEY);
 const client = new ComfyDeploy({
-    bearerAuth: process.env.COMFYDEPLOY_API_KEY,
+    bearerAuth: process.env.comfydeploy_api_key,
 });
 
 async function checkStatus(run_id) {
@@ -24,31 +24,32 @@ export default async function handler(req = NextApiRequest, res = NextApiRespons
         const prompts = fileContent.split('---').map(prompt => prompt.trim());
         
         for (const prompt of prompts) {
-            console.log('--------- processing prompt:', prompt)
+            console.log('Processing prompt:', prompt)
             
-        
             // Step 1: Send request to ComfyDeploy
-        const result = await client.run.create({
-            deployment_id: "1d2a9051-9fb1-48fc-9248-7dc7c39ac44d",
-            // webhook: "http://localhost:3000/api/webhook",           // suggested
-            inputs: {
-                "prompt": prompt,
-                "steps_1": 8,
-                "steps_2": 8,
-                "guidance_1": 4,
-                "guidance_2": 8,
-                "width": 768,
-                "height": 1024,
-                "scale": 2,
-                "upscale_steps": 4
+            const result = await client.run.create({
+                deployment_id: "41f9a271-1791-4d57-8be7-921c42137c1e",
+                // webhook: "http://localhost:3000/api/webhook",           // suggested
+                inputs: {
+                    "prompt": prompt,
+                    "steps_1": 8,
+                    "steps_2": 8,
+                    "guidance_1": 4,
+                    "guidance_2": 8,
+                    "width": 768,
+                    "height": 1024,
+                    "scale": 2,
+                    "upscale_steps": 4
+                }
+            });
+
+            
+            
+            if (result) {
+                const runId = result.runId
+                // save runId to database
+                console.log('runId', runId)
             }
-        });
-        
-        if (result) {
-            const runId = result.runId
-            // save runId to database
-            console.log('runId', runId)
-        }
   
         // polling for the result
         let imageUrl;
