@@ -1,12 +1,12 @@
-import type { NextPage } from "next";
+import type { NextPage, InferGetStaticPropsType, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-import Logo from "../components/Icons/Logo";
+import FirstBox from "../components/FirstBox";
 import Modal from "../components/Modal";
-import cloudinary from "../utils/cloudinary";
+// import cloudinary from "../utils/cloudinary";
 import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
@@ -30,17 +30,6 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
 
   return (
     <>
-      <Head>
-        <title>Reica - Generate Free Photo AI</title>
-        <meta
-          property="og:image"
-          content="./og-image.png"
-        />
-        <meta
-          name="twitter:image"
-          content="./og-image.png"
-        />
-      </Head>
       <main className="mx-auto max-w-[1960px] p-4">
         {photoId && (
           <Modal
@@ -51,27 +40,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
           />
         )}
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 2xl:columns-4">
-          <div className="after:content relative mb-5 flex h-[650px] flex-col items-center justify-end gap-4 overflow-hidden rounded-lg bg-white px-6 pb-16 pt-64 text-center text-white shadow-highlight after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight lg:pt-0">
-            <Logo />
-            <h1 className="mt-8 mb-4 text-3xl text-black font-bold uppercase">
-              Latest generations
-            </h1>
-            <p className="max-w-[40ch] text-black text-2xl sm:max-w-[32ch]">
-              A wall of FREE photo and ai photo generations for your adv!
-            </p>
-            <hr/>
-            <p className="max-w-[40ch] text-black/85 text-xl sm:max-w-[32ch]">
-              Generate AI Photo for free! Sign up and get FREE credits to test upscaler or generate images for your next marketing campaign.
-            </p>
-            <a
-              className="pointer z-10 mt-6 rounded-lg border border-white bg-blue-600 px-6 py-4 text-lg font-semibold text-white transition hover:bg-blue-600/80 hover:text-white md:mt-4"
-              href="https://getreica.com?ref=wall-general"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Sign up to generate for free!
-            </a>
-          </div>
+          <FirstBox />
           {images.map(({ id, public_id, format, prompt, blurDataUrl }) => (
             <Link
               key={id}
@@ -82,7 +51,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
             >
               <Image
-                alt={`Reica - AI Photo Generation Free - ${prompt}`}
+                alt={`Reica | ${prompt}`}
                 className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110"
                 style={{ transform: "translate3d(0, 0, 0)" }}
                 placeholder="blur"
@@ -115,41 +84,38 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
 };
 
 
-export async function getStaticProps() {
-  const results = await cloudinary.v2.search
-  .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
-  .sort_by("public_id", "desc")
-  .max_results(400)
-  .execute();
+export const getStaticProps = (async (context) => {
+  
   let reducedResults: ImageProps[] = [];
   
   // SUPABASE
   const { data, error } = await supabase
   .from('latest_generations')
-  .select('*');
+  .select('*')
+  .order('created_at', { ascending: true })
+  .limit(25);
   
   if (error) {
     console.error('Error fetching data:', error);
-    return { props: { data: [] } };
+    return { props: { images: [] } };
   }
-  
-  let i = 0;
-  for (let result of results.resources) {
-    // console.log('cloudinary: ', result.public_id, result.format )
-    let picked = data.find(o => o.image_name === result.public_id);
-    
+
+  let k = 0;
+  for (let image of data){
     reducedResults.push({
-      id: i,
-      height: result.height,
-      width: result.width,
-      public_id: result.public_id,
-      format: result.format,
-      prompt: picked ? picked.prompt : ""
+      id: image.id, // id: k 
+      height: "auto",
+      width: "auto",
+      public_id: image.image_name,
+      public_url: image.public_url,
+      format: image.image_format,
+      prompt: image.prompt ? image.prompt : ""
     });
-    i++;
+
+    k++;
   }
   
-  const blurImagePromises = results.resources.map((image: ImageProps) => {
+  const blurImagePromises = data.map((image: ImageProps) => {
     return getBase64ImageUrl(image);
   });
   const imagesWithBlurDataUrls = await Promise.all(blurImagePromises);
@@ -163,6 +129,6 @@ export async function getStaticProps() {
       images: reducedResults,
     },
   };
-}
+} )
 
 export default Home;
