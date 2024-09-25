@@ -30,17 +30,6 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
 
   return (
     <>
-      <Head>
-        <title>Reica - Generate Free Photo AI</title>
-        <meta
-          property="og:image"
-          content="./og-image.png"
-        />
-        <meta
-          name="twitter:image"
-          content="./og-image.png"
-        />
-      </Head>
       <main className="mx-auto max-w-[1960px] p-4">
         {photoId && (
           <Modal
@@ -97,20 +86,14 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
 
 export const getStaticProps = (async (context) => {
   
-  // const results = await cloudinary.v2.search
-  //                 .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
-  //                 .sort_by("public_id", "desc")
-  //                 .max_results(400)
-  //                 .execute();
-
-  //                 console.log('cloudinary', results)
-                  
   let reducedResults: ImageProps[] = [];
   
   // SUPABASE
   const { data, error } = await supabase
   .from('latest_generations')
-  .select('*');
+  .select('*')
+  .order('created_at', { ascending: true })
+  .limit(25);
   
   if (error) {
     console.error('Error fetching data:', error);
@@ -120,7 +103,7 @@ export const getStaticProps = (async (context) => {
   let k = 0;
   for (let image of data){
     reducedResults.push({
-      id: k,
+      id: image.id, // id: k 
       height: "auto",
       width: "auto",
       public_id: image.image_name,

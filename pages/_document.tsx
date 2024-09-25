@@ -6,7 +6,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/favicon.png" />
 
           <meta property="og:site_name" content={`${process.env.url}`} />
           <meta property="og:title" content={`${process.env.title_og}`} key="title" />
@@ -20,15 +20,15 @@ class MyDocument extends Document {
           />
           <meta
             property="og:image"
-            content={`${process.env.url}/images/open-graph.png`}
+            content={`${process.env.url}/open-graph.png`}
           />
           <meta
             name="twitter:image"
-            content={`${process.env.url}/images/open-graph.png`}
+            content={`${process.env.url}/open-graph.png`}
           />
 
         </Head>
-        <body>
+        <body className="bg-black antialiased">
           <Main />
           <NextScript />
         </body>

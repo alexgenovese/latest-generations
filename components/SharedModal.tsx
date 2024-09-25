@@ -50,7 +50,7 @@ export default function SharedModal({
     trackMouse: true,
   });
 
-  let currentImage = images ? images[index] : currentPhoto;
+  let currentImage = images ? images.find(o => o.id === index ) : currentPhoto;
 
   return (
     <MotionConfig
@@ -89,7 +89,6 @@ export default function SharedModal({
                   alt={ `"Reica | ${currentImage.prompt}"`}
                   onLoad={() => setLoaded(true)}
                   onLoadStart={() => setLoaded(false) }
-
                 />
 
                 { (loaded == false) ? <>
