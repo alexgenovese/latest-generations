@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Carousel from "../../components/Carousel";
 import getBase64ImageUrl from "../../utils/generateBlurPlaceholder";
 import type { ImageProps } from "../../utils/types";
-import { supabase } from '../../utils/supabaseClient';
+import { createClient } from '../../utils/supabaseSSR';
 
 const Home: NextPage = ({ currentPhoto }: { currentPhoto: ImageProps }) => {
   const router = useRouter();
@@ -32,10 +32,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let reducedResults: ImageProps[] = [];
 
   // SUPABASE
-  const { data, error } = await supabase
-  .from('latest_generations')
-  .select('*')
-  .eq('id', context.params.photoId);
+  const { data, error } = await createClient()
+    .from('latest_generations')
+    .select('*')
+    .eq('id', context.params.photoId);
   
   if (error) {
     console.error('Error fetching data:', error);
@@ -71,16 +71,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export async function getStaticPaths() {
   // SUPABASE
-  const { data, error } = await supabase
-  .from('latest_generations')
-  .select('id');
+  const { data, error } = await createClient()
+    .from('latest_generations')
+    .select('id');
 
   let fullPaths = [];
   for (let i = 0; i < data.length; i++) {
     fullPaths.push({ params: { photoId: data[i].id.toString() } });
   }
-
-  console.log('fullPaths', fullPaths)
 
   return {
     paths: fullPaths,

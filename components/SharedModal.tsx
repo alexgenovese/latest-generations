@@ -31,7 +31,6 @@ export default function SharedModal({
   const router = useRouter();
   const { photoId } = router.query;
 
-
   let filteredImages = images?.filter((img: ImageProps) =>
     range(index - 15, index + 15).includes(img.id),
   );
