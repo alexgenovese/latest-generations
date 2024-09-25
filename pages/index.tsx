@@ -1,4 +1,4 @@
-import type { NextPage, InferGetStaticPropsType, GetStaticProps } from "next";
+import type { NextPage, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +10,8 @@ import Modal from "../components/Modal";
 import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
-import { createClient, getStaticResults } from '../utils/supabaseSSR';
+import { getStaticResults } from '../utils/supabaseSSR';
+import Loading from '../components/Loading';
 
 
 const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
@@ -87,14 +88,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
         )}
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 2xl:columns-4">
           <FirstBox />
-          { isLoading ? (
-            <div className='z-50 absolute top-0 left-0 w-full h-full flex space-x-6 justify-center items-center bg-black/80'>
-              <span className='text-4xl text-white font-semibold'>Loading...</span>
-              <div className='h-4 w-4 bg-white rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-              <div className='h-4 w-4 bg-white rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-              <div className='h-4 w-4 bg-white rounded-full animate-bounce'></div>
-            </div>
-          ) : '' }
+          { isLoading ? ( <Loading /> ) : '' }
 
           {posts.map(({ id, public_id, format, prompt, blurDataUrl }) => (
             <Link
@@ -123,20 +117,23 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
           ))}
 
         </div>
+
         <div className="w-full border border-white/40 hover:border-white p-4 mx-auto text-center mt-12">
           <button className="bg-white p-6 block w-full text-3xl font-semibold" onClick={getNewPage}>Load More</button>
         </div>
+
       </main>
-      <footer className="p-6 text-center text-white/80 sm:p-12">
-        Community creation from Reica {" "} – 
+      <footer className="p-6 text-center text-2xl text-white/80 sm:p-12">
+        Made with Reica {" "} – 
         <a
-          href="https://getreica.com/"
+          href={`https://getreica.com?ref=${process.env.slug_link}`}
           target="_blank"
           className="font-semibold hover:text-white"
           rel="noreferrer"
         >
           Try Reica for free
         </a>
+        <p className="py-4 text-gray-500 text-lg">Copyright Growth Marketing srl 2024</p>
       </footer>
     </>
   );

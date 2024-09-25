@@ -15,7 +15,7 @@ import { variants } from "../utils/animationVariants";
 import downloadPhoto from "../utils/downloadPhoto";
 import { range } from "../utils/range";
 import type { ImageProps, SharedModalProps } from "../utils/types";
-// import { loadEnvConfig } from '@next/env'
+import Loading from "../components/Loading"
 import TwitterShare from "./TwitterShare"
 
 export default function SharedModal({
@@ -91,12 +91,7 @@ export default function SharedModal({
                 />
 
                 { (loaded == false) ? <>
-                  <div className='absolute top-60 flex space-x-4 justify-center items-center bg-white h-[512px] w-[64rem] dark:invert'>
-                    <span className='sr-only'>Loading...</span>
-                    <div className='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-                    <div className='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-                    <div className='h-4 w-4 bg-black rounded-full animate-bounce'></div>
-                  </div>
+                  <Loading />
                 </> : <></> }
 
                 { (loaded) ?
