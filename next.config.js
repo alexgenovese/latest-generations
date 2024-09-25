@@ -1,4 +1,10 @@
 module.exports = {
+  env: {
+    slug_link: "latest-generations",
+    url: "latest-generations.getreica.com",
+    title_og: "Reica | Generate AI image for Free",
+    desc_og: "AI Generative photorealistic suite for Marketeers | Try and generate photo free, Get Free Credits to Generate your next asset"
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
