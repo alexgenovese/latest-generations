@@ -27,7 +27,8 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   const getNewPage = ( async () => {
     setIsLoading(true)
     setPage(page + 1)
-    const data = await getStaticResults(10, (page*10), (page*10)+10 )
+    const itemsPerPage = 20
+    const data = await getStaticResults(itemsPerPage, (page*itemsPerPage), (page*itemsPerPage)+itemsPerPage )
     
     let reducedResults: ImageProps[] = [];
     let k = 0;
@@ -141,10 +142,8 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
 
 
 export const getStaticProps = (async (context) => {
-  
-  
   // SUPABASE
-  const data = await getStaticResults(10, 0, 9)
+  const data = await getStaticResults(20, 0, 19)
   
   let reducedResults: ImageProps[] = [];
   let k = 0;
