@@ -18,15 +18,6 @@ class MyDocument extends Document {
             name="twitter:description"
             content={`${process.env.desc_og}`}
           />
-          <meta
-            property="og:image"
-            content={`${process.env.url}/open-graph.png`}
-          />
-          <meta
-            name="twitter:image"
-            content={`${process.env.url}/open-graph.png`}
-          />
-
         </Head>
         <body className="bg-black antialiased">
           <Main />

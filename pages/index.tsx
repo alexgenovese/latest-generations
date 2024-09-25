@@ -30,6 +30,10 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
 
   return (
     <>
+      <Head>
+          <meta property="og:image" content={`${process.env.url}/open-graph.png`} />
+          <meta name="twitter:image" content={`${process.env.url}/open-graph.png`} />
+      </Head>
       <main className="mx-auto max-w-[1960px] p-4">
         {photoId && (
           <Modal
