@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import {
   ArrowDownTrayIcon,
   ArrowTopRightOnSquareIcon,
@@ -15,7 +16,6 @@ import downloadPhoto from "../utils/downloadPhoto";
 import { range } from "../utils/range";
 import type { ImageProps, SharedModalProps } from "../utils/types";
 // import { loadEnvConfig } from '@next/env'
-// import Twitter from "./Icons/Twitter";
 import TwitterShare from "./TwitterShare"
 
 export default function SharedModal({
@@ -28,7 +28,9 @@ export default function SharedModal({
   direction,
 }: SharedModalProps) {
   const [loaded, setLoaded] = useState(false);
-  console.log('loaded', loaded)
+  const router = useRouter();
+  const { photoId } = router.query;
+
 
   let filteredImages = images?.filter((img: ImageProps) =>
     range(index - 15, index + 15).includes(img.id),
@@ -103,7 +105,7 @@ export default function SharedModal({
                 <>
                   <div className="bg-white absolute top-0 w-full p-6 -mt-20">
                     <div className="flex justify-between">
-                      <div><TwitterShare text="Get your next photorealistic photo on Reica" url="https://getreica.com" /></div>
+                      <div><TwitterShare text="Get your next photorealistic photo on Reica" url={`https://getreica.com/p/${photoId}`} /></div>
                       <div>
                         <button 
                         onClick={() => {
@@ -114,7 +116,7 @@ export default function SharedModal({
                           }
                         }
                         className="pointer inline-block rounded-lg border border-white bg-green-600 p-4 text-lg font-semibold text-white transition hover:bg-green-600/80 hover:text-white">
-                          DOWNLOAD FREE ({currentImage.width} x {currentImage.height})
+                          DOWNLOAD FREE (Free License)
                         </button>
                       </div>
                     </div>
