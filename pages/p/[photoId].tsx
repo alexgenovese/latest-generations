@@ -46,19 +46,18 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return { props: { data: [] } };
   }
 
-  let i = 0;
-  for (let result of results.resources) {
-    let picked = data.find(o => o.image_name === result.public_id);
-
+  let k = 0;
+  for (let image of data){
     reducedResults.push({
-      id: i,
-      height: result.height,
-      width: result.width,
-      public_id: result.public_id,
-      format: result.format,
-      prompt: picked ? picked.prompt : ""
+      id: k,
+      height: "auto",
+      width: "auto",
+      public_id: image.image_name,
+      public_url: image.public_url,
+      format: image.image_format,
+      prompt: image.prompt ? image.prompt : ""
     });
-    i++;
+    k++;
   }
 
   const currentPhoto = reducedResults.find(
@@ -74,14 +73,19 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export async function getStaticPaths() {
-  const results = await cloudinary.v2.search
-    .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
-    .sort_by("public_id", "desc")
-    .max_results(400)
-    .execute();
+  // const results = await cloudinary.v2.search
+  //   .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
+  //   .sort_by("public_id", "desc")
+  //   .max_results(400)
+  //   .execute();
+
+  // SUPABASE
+  const { data, error } = await supabase
+  .from('latest_generations')
+  .select('*');
 
   let fullPaths = [];
-  for (let i = 0; i < results.resources.length; i++) {
+  for (let i = 0; i < data.length; i++) {
     fullPaths.push({ params: { photoId: i.toString() } });
   }
 

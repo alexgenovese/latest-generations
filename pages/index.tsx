@@ -129,26 +129,8 @@ export const getStaticProps = (async (context) => {
       prompt: image.prompt ? image.prompt : ""
     });
 
-    console.log('image: ', image)
-
     k++;
   }
-  
-  // let i = 0;
-  // for (let result of results.resources) {
-  //   // console.log('cloudinary: ', result.public_id, result.format )
-  //   let picked = data.find(o => o.image_name === result.public_id);
-    
-  //   reducedResults.push({
-  //     id: i,
-  //     height: result.height,
-  //     width: result.width,
-  //     public_id: result.public_id,
-  //     format: result.format,
-  //     prompt: picked ? picked.prompt : ""
-  //   });
-  //   i++;
-  // }
   
   const blurImagePromises = data.map((image: ImageProps) => {
     return getBase64ImageUrl(image);
