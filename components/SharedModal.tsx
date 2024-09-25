@@ -4,7 +4,7 @@ import {
   ArrowUturnLeftIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  XMarkIcon,
+  XMarkIcon
 } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import Image from "next/image";
@@ -15,7 +15,8 @@ import downloadPhoto from "../utils/downloadPhoto";
 import { range } from "../utils/range";
 import type { ImageProps, SharedModalProps } from "../utils/types";
 // import { loadEnvConfig } from '@next/env'
-import Twitter from "./Icons/Twitter";
+// import Twitter from "./Icons/Twitter";
+import TwitterShare from "./TwitterShare"
 
 export default function SharedModal({
   index,
@@ -83,7 +84,7 @@ export default function SharedModal({
                   width={navigation ? 1024 : 1920}
                   height={navigation ? 768 : 1280}
                   priority
-                  alt={ `"Reica - ai photo generator - ${currentImage.prompt}"`}
+                  alt={ `"Reica | ${currentImage.prompt}"`}
                   onLoad={() => setLoaded(true)}
                   onLoadStart={() => setLoaded(false) }
 
@@ -102,7 +103,7 @@ export default function SharedModal({
                 <>
                   <div className="bg-white absolute top-0 w-full p-6 -mt-20">
                     <div className="flex justify-between">
-                      <div></div>
+                      <div><TwitterShare text="Get your next photorealistic photo on Reica" url="https://getreica.com" /></div>
                       <div>
                         <button 
                         onClick={() => {
@@ -112,17 +113,17 @@ export default function SharedModal({
                             )
                           }
                         }
-                        className="pointer inline-block rounded-lg border border-white bg-green-600 px-6 py-4 text-lg font-semibold text-white transition hover:bg-green-600/80 hover:text-white">
+                        className="pointer inline-block rounded-lg border border-white bg-green-600 p-4 text-lg font-semibold text-white transition hover:bg-green-600/80 hover:text-white">
                           DOWNLOAD FREE ({currentImage.width} x {currentImage.height})
                         </button>
                       </div>
                     </div>
                   </div>
                   <div className="bg-gradient-to-t from-black to-transparent p-8 absolute bottom-0 w-full">
-                    <span className="text-xl text-white font-bold font-sans block py-2">You have to write a long prompt to generate the image.</span>
-                    <span className="text-2xl text-white font-bold font-sans block pb-4">With Reica just clicking on NO-PROMPT builder to generate this image.</span>
-                    <a className="bg-blue-600 hover:bg-blue-600 px-8 py-4 inline-flex text-white text-2xl" target="_blank" href="https://getreica.com?ref=latest-generations">Try it Now for Free</a>
-                    <p className="text-lg mt-4 text-gray-100 text-ellipsis text-nowrap overflow-y-auto">{currentImage.prompt}</p>
+                    <span className="text-xl text-white font-bold font-sans block py-2"><span className="bg-black p-2">You have to write a long prompt to generate the image, like this:</span> {currentImage.prompt}</span>
+                    <span className="text-2xl text-white font-bold font-sans block pb-12"><span className="bg-yellow-500 p-2">With Reica</span> just clicking on <span className="bg-violet-500 p-2">NO-PROMPT</span> builder to generate this image.</span>
+                    <a className="bg-blue-600 hover:bg-blue-600 px-8 py-4 inline-flex text-white text-2xl" target="_blank" href="https://getreica.com?ref=latest-generations">Sign Up & Get Free Credits</a>
+                    {/* <p className="text-lg mt-4 text-gray-100 text-ellipsis text-nowrap overflow-y-auto">{currentImage.prompt}</p> */}
                   </div>
                 </>
                 : (<></>) }
