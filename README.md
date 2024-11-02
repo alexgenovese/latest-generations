@@ -1,6 +1,12 @@
-# Reica Wallpaper 
+# Reica Latest Generations Landing page
 
-Get all images and prompts from Supabase, load from Cloudinary the assets and compose the wallpaper with infinite scroll. 
+Get all images and prompts from Supabase, load from Cloudinary the assets and compose the wallpaper. 
+
+## Next things to do: 
+- infinite scroll 
+- sidebar filters 
+- page photo: add similar photos 
+
 
 ## Goal: Traffic
 
