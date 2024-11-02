@@ -1,8 +1,0 @@
-{
-    "crons": [
-      {
-        "path": "/api/generate-photos",
-        "schedule": "30 16 * * *"
-      }
-    ]
-  }

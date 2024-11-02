@@ -19,7 +19,7 @@ class MyDocument extends Document {
             content={`${process.env.desc_og}`}
           />
         </Head>
-        <body className="bg-black antialiased">
+        <body className="antialiased">
           <Main />
           <NextScript />
         </body>

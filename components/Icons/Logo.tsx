@@ -1,5 +1,5 @@
 export default function Logo() {
   return (
-    <img src="./logo-reica.svg" alt="Reica logo" width={64} />
+    <img src="/logo-reica.svg" alt="Reica logo" width={64} />
   );
 }

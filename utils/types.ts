@@ -8,6 +8,8 @@ export interface ImageProps {
   format: string;
   blurDataUrl?: string;
   prompt?: string;
+  promColors?: string[];
+  created_at?: string;
 }
 
 export interface SharedModalProps {
@@ -19,4 +21,10 @@ export interface SharedModalProps {
   navigation: boolean;
   direction?: number;
   prompt?: string;
+}
+
+export interface searchResultsProps {
+  index: number;
+  name: string;
+  id: number;
 }

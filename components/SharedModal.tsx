@@ -1,12 +1,9 @@
 import { useRouter } from "next/router";
 import {
-  ArrowDownTrayIcon,
-  ArrowTopRightOnSquareIcon,
-  ArrowUturnLeftIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  XMarkIcon
-} from "@heroicons/react/24/outline";
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle
+} from "react-bootstrap-icons";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
@@ -98,7 +95,7 @@ export default function SharedModal({
                 <>
                   <div className="bg-white absolute top-0 w-full p-6 -mt-20">
                     <div className="flex justify-between">
-                      <div><TwitterShare text="Get your next photorealistic photo on Reica" url={`https://getreica.com/p/${photoId}`} /></div>
+                      <div><TwitterShare text="Get your next photorealistic photo on Reica" url={`https://latest-generations.getreica.com/p/${photoId}`} /></div>
                       <div>
                         <button 
                         onClick={() => {
@@ -143,7 +140,7 @@ export default function SharedModal({
                       }
                     }
                     >
-                      <ChevronLeftIcon className="h-6 w-6" />
+                      <ArrowLeft className="h-6 w-6" />
                     </button>
                   )}
                   {index + 1 < images.length && (
@@ -156,7 +153,7 @@ export default function SharedModal({
                       }
                     }
                     >
-                      <ChevronRightIcon className="h-6 w-6" />
+                      <ArrowRight className="h-6 w-6" />
                     </button>
                   )}
                 </>
@@ -168,9 +165,9 @@ export default function SharedModal({
                   className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
                 >
                   {navigation ? (
-                    <XMarkIcon className="h-12 w-12" />
+                    <CheckCircle className="h-12 w-12" />
                   ) : (
-                    <ArrowUturnLeftIcon className="h-12 w-12" />
+                    <ArrowLeft className="h-12 w-12" />
                   )}
                 </button>
               </div>
