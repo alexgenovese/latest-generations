@@ -1,5 +1,3 @@
-'use client'
-
 import type { NextPage } from "next";
 import type { ImageProps } from "../../utils/types";
 import { useRouter } from 'next/router';
@@ -9,9 +7,9 @@ import Image from "next/image";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
-const Result: NextPage = ({ postSlug, query }: { postSlug: ImageProps[], query: string }) => {
+const Result: NextPage = ({ query, postSlug }: { query: string[], postSlug: ImageProps[] }) => {
   const router = useRouter();
-  if (router.isFallback)  return <div>Loading...</div>;
+  if (router.isFallback || postSlug == undefined)  return <div>Loading...</div>;
   // Render post...
 
 
@@ -24,7 +22,7 @@ const Result: NextPage = ({ postSlug, query }: { postSlug: ImageProps[], query: 
           <div className="w-full max-w-7xl mx-auto px-4 lg:px-8">
               <div className="w-full max-w-4xl mx-auto sm:px-12 mb-10 lg:mb-10">
               <h1 className="font-manrope font-bold text-4xl leading-snug sm:text-5xl text-center mb-5 text-black">
-                  Results for {query}
+                  Results for {query[0]}
               </h1>
               </div>
           </div>
@@ -69,36 +67,24 @@ export default Result;
 
 export async function getStaticPaths() {
   return {
-    paths: [{ params: { postSlug: [
-      {
-        id: 86,
-        height: 'auto',
-        width: 'auto',
-        public_id: 'reica_6724f74433898',
-        public_url: 'https://res.cloudinary.com/djy2oac4l/image/upload/v1730475850/reica_6724f74433898.png',
-        format: 'png',
-        prompt: "A detailed digital illustration of a black cat with blue eyes and a serene expression, standing in profile against a vivid turquoise wall. The cat's fur is adorned with a scarf and collar, adding an air of mystery to the scene. The painting captures a moment in time, focusing attention on the cat's direct gaze, while the background is a vibrant canvas, emphasizing the cat's serene expression.",
-        created_at: '2024-11-01T15:44:10+00:00',
-        blurDataUrl: 'data:image/jpeg;base64,'
-      }
-    ], query: 'cat' } }],
+    paths: [{ params: { postSlug: [], query: ["cat"] }}],
     fallback: true,
   };
 }
 
 export async function getStaticProps({ params }) {
-
-    const data = await searchResults(params.postSlug, 20)
+    if (!params || params.postSlug == undefined) return { props: { query: ['58'], postSlug: [] } }
+    const data = await searchResults(params.postSlug[0], 20)
   
     if (!data){
         console.error('Error fetching search results data:', data);
-        return { props: { postSlug: [] } };
+        return { props: { query: ['58'], postSlug: [] } };
     }
     
     return {
       props: {
         postSlug: data,
-        query: params.postSlug
+        query: [params.postSlug[0].toString() ]
       },
     };
 }

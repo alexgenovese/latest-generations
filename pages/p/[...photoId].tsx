@@ -7,7 +7,7 @@ import ImageComp from "../../components/Image";
 import type { ImageProps } from "../../utils/types";
 import { getPhotoById } from '../../utils/supabaseSSR';
 
-const Home: NextPage = ({ currentPhoto, photoId }: { currentPhoto: ImageProps[], photoId: string[] }) => {
+const Home: NextPage = ({ photoId, currentPhoto }: { photoId: string[], currentPhoto: ImageProps[] }) => {
   const router = useRouter();
   if (router.isFallback)  return <div>Loading...</div>;
   const currentPhotoUrl = `https://res.cloudinary.com/${process.env.cloudinary_cloud_name}/image/upload/c_scale,w_1024/${currentPhoto[0].public_id}.${currentPhoto[0].format}`

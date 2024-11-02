@@ -4,8 +4,8 @@ import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 
 export function createClient() {
   return createBrowserClient(
-    process.env.supabase['url'],
-    process.env.supabase['api_key']
+    process.env.supabase_url,
+    process.env.supabase_api_key
   )
 }
 
