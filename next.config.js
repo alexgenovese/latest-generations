@@ -30,6 +30,13 @@ const nextConfig = {
     supabase_api_key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkbG1oa2xkaXNvcnNncG9uaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjQ0MzMyMjEsImV4cCI6MjA0MDAwOTIyMX0.Q8eqlJCRggK_1fP6BAIFThvKVgJEYEoS3xdSOjXmqYA",
     supabase_url: "https://ddlmhkldisorsgponisj.supabase.co",
   },
+  webpack: (
+    config,
+    { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }
+  ) => {
+    // Important: return the modified config
+    return config
+  },
 };
 
 module.exports = nextConfig
