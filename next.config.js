@@ -23,7 +23,6 @@ const nextConfig = {
   },
   env: {
     cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    comfydeploy_api_key: process.env.COMFYDEPLOY_API_KEY,
     slug_link: "latest-generations",
     url: "latest-generations.getreica.com",
     title_og: "Reica | Generate AI image for Free",
