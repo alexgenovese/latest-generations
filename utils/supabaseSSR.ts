@@ -1,6 +1,7 @@
 import { createBrowserClient } from '@supabase/ssr'
-import type { ImageProps } from "../utils/types";
-import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
+import type { ImageProps } from "./types";
+// import getBase64ImageUrl from "./generateBlurPlaceholder";
+// import getPlaceholderImage from "./getPlaceholderImage";
 
 export function createClient() {
   return createBrowserClient(
@@ -114,7 +115,9 @@ export const createImageList = async (data) => {
   }
 
   const blurImagePromises = data.map((image: ImageProps) => {
-    return getBase64ImageUrl(image);
+    // return getBase64ImageUrl(image);
+    // return getPlaceholderImage(image)
+    return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOsa2yqBwAFCAICLICSyQAAAABJRU5ErkJggg=='
   });
   const imagesWithBlurDataUrls = await Promise.all(blurImagePromises);
   

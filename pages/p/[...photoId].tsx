@@ -3,13 +3,14 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import ImageComp from "../../components/Image";
+import ImageComp from "../../components/ImageComp";
 import type { ImageProps } from "../../utils/types";
 import { getPhotoById } from '../../utils/supabaseSSR';
+import Loading from '../../components/Loading';
 
 const Home: NextPage = ({ photoId, currentPhoto }: { photoId: string[], currentPhoto: ImageProps[] }) => {
   const router = useRouter();
-  if (router.isFallback)  return <div>Loading...</div>;
+  if (router.isFallback)  return ( <Loading /> );
   const currentPhotoUrl = `https://res.cloudinary.com/${process.env.cloudinary_cloud_name}/image/upload/c_scale,w_1024/${currentPhoto[0].public_id}.${currentPhoto[0].format}`
 
   return (
@@ -22,11 +23,11 @@ const Home: NextPage = ({ photoId, currentPhoto }: { photoId: string[], currentP
       <main className="mx-auto max-w-[1960px]">
         <Header />
 
-        <ImageComp 
+        <ImageComp
+          key={currentPhoto[0].id}
           currentPhoto={currentPhoto[0]}
           photoId={photoId}
         />
-
 
         <Footer />
       </main>

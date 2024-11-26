@@ -13,6 +13,7 @@ import Loading from '../components/Loading';
 
 
 const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
+  // console.log('----- START ---- ', images)
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState([]);
@@ -67,8 +68,6 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
         </section>
 
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 2xl:columns-4">
-          { isLoading ? ( <Loading /> ) : '' }
-
           {posts.map(({ id, public_id, format, prompt, blurDataUrl }) => (
             <Link
               key={id}
@@ -79,12 +78,14 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               className="after:content group relative mb-5 block w-full after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
             >
               <Image
+                key={id}
                 alt={`Reica | ${prompt.substring(0, 97) + "..."}`}
                 className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110"
                 style={{ transform: "translate3d(0, 0, 0)" }}
+                loading="lazy"
                 placeholder="blur"
                 blurDataURL={blurDataUrl}
-                src={`https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME ? process.env.CLOUDINARY_CLOUD_NAME : process.env.cloudinary_cloud_name }/image/upload/c_scale,w_720/${public_id}.${format}`}
+                src={`https://res.cloudinary.com/${process.env.cloudinary_cloud_name}/image/upload/c_scale,w_720/${public_id}.${format}`}
                 width={720}
                 height={480}
                 sizes="(max-width: 640px) 100vw,
@@ -93,12 +94,13 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
                   25vw"
               />
             </Link>
+
           ))}
         </div>
 
         { isLoading ? ( 
           <div className="w-full border border-white/40 hover:border-white p-4 mx-auto text-center mt-12">
-            <button disabled className="bg-black p-6 block w-full text-3xl font-semibold text-white">Loading...</button>
+            <button disabled className="bg-black p-6 block w-full text-3xl font-semibold text-white"><Loading /></button>
           </div>
 
          ) : 
